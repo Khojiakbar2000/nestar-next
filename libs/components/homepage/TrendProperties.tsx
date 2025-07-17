@@ -8,6 +8,9 @@ import { Autoplay, Navigation, Pagination } from 'swiper';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import TrendPropertyCard from './TrendPropertyCard';
+import { useQuery } from '@apollo/client';
+import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { T } from '../../types/common';
 
 interface TrendPropertiesProps {
 	initialInput: PropertiesInquiry;
@@ -19,9 +22,26 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 	const [trendProperties, setTrendProperties] = useState<Property[]>([]);
 
 	/** APOLLO REQUESTS **/
-	/** HANDLERS **/
+	const {
+		loading: getPropertiesLoading,
+		 data: getPropertiesData, 
+		 error:getPropertiesError,
+		refetch: getPropertiesRefetch} = useQuery(GET_PROPERTIES, {
+			fetchPolicy: 'cache-and-network',
+			variables: {input: initialInput},
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setTrendProperties(data?.getProperties?.list);
+				console.log("📦 API data:", data);
 
-	if (trendProperties) console.log('trendProperties:', trendProperties);
+
+			},
+		});
+	/** HANDLERS **/
+	
+
+
+	if (trendProperties) console.log('trendProperties: +++', trendProperties);
 	if (!trendProperties) return null;
 
 	if (device === 'mobile') {

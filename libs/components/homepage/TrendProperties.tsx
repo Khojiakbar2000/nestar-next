@@ -32,7 +32,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 			notifyOnNetworkStatusChange: true,
 			onCompleted: (data: T) => {
 				setTrendProperties(data?.getProperties?.list);
-				console.log("📦 API data:", data);
+				
 
 
 			},

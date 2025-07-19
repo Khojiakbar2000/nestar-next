@@ -27,7 +27,8 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 				<Box
 					component={'div'}
 					className={'card-img'}
-					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
+					//style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
+						style={{ backgroundImage: `url(${"http://localhost:3007"}/${property?.propertyImages[0]})` }}
 				>
 					{property?.propertyRank && property?.propertyRank >= 50 ? (
 						<div className={'status'}>

@@ -16,6 +16,11 @@ function getHeaders() {
 	return headers;
 }
 
+
+
+
+
+
 const tokenRefreshLink = new TokenRefreshLink({
 	accessTokenField: 'accessToken',
 	isTokenValidOrUndefined: () => {
@@ -28,6 +33,21 @@ const tokenRefreshLink = new TokenRefreshLink({
 });
 
 function createIsomorphicLink() {
+	function createIsomorphicLink() {
+		console.log('GraphQL URL inside createIsomorphicLink:', process.env.REACT_APP_API_GRAPHQL_URL); 
+	
+		const httpLink = createUploadLink({
+			uri: process.env.REACT_APP_API_GRAPHQL_URL ?? "http://localhost:3007/graphql"
+		});
+	
+		if (typeof window === 'undefined') {
+			return from([tokenRefreshLink, httpLink]);
+		} else {
+			// rest of the code...
+		}
+	}
+	
+	//console.log('GraphQL URL inside createIsomorphicLink:', process.env.NEXT_PUBLIC_API_GRAPHQL_URL);
 	if (typeof window !== 'undefined') {
 		const authLink = new ApolloLink((operation, forward) => {
 			operation.setContext(({ headers = {} }) => ({
@@ -37,12 +57,18 @@ function createIsomorphicLink() {
 				},
 			}));
 			console.warn('requesting.. ', operation);
+			//console.warn('requesting.. ', operation.query.loc?.source.body, operation.variables);
+
 			return forward(operation);
 		});
 
 		// @ts-ignore
 		const link = new createUploadLink({
-			uri: process.env.REACT_APP_API_GRAPHQL_URL 
+			
+			uri: process.env.REACT_APP_API_GRAPHQL_URL ?? "http://localhost:3007/graphql"
+			//uri: process.env.NEXT_PUBLIC_API_GRAPHQL_URL ?? "http://localhost:3007/graphql"
+		
+
 		});
 
 		/* WEBSOCKET SUBSCRIPTION LINK */
@@ -77,10 +103,14 @@ function createIsomorphicLink() {
 			wsLink,
 			authLink.concat(link),
 		);
+		console.log('GraphQL URL inside createIsomorphicLink:', process.env.REACT_APP_API_GRAPHQL_URL);
+
 
 		return from([errorLink, tokenRefreshLink, splitLink]);
 	}
-}
+	}
+
+
 
 function createApolloClient() {
 	return new ApolloClient({

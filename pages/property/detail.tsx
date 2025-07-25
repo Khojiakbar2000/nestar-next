@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Box, Button, Checkbox, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import { NextPage } from 'next';
@@ -67,7 +67,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
 		 data: getPropertyData, 
 		 error:getPropertyError,
 		refetch: getPropertyRefetch} = useQuery(GET_PROPERTY, {
-			fetchPolicy: 'cache-and-network',
+			fetchPolicy: 'network-only',
 			variables: {input:propertyId},
 			skip: !propertyId,
 			notifyOnNetworkStatusChange: true,
@@ -195,6 +195,12 @@ if(commentInquiry.search.commentRefId){
 		}catch(err: any){
          await sweetErrorHandling(err)
 		}
+	}
+
+	if(getPropertyLoading){
+return(<Stack sx={{display: "flex", justifyContent: "center", alignItems: "center", width:"100%", height: "1000px" }}>
+	<CircularProgress size={"4rem"}/>
+</Stack>)
 	}
 
 	if (device === 'mobile') {

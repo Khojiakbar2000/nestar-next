@@ -14,6 +14,7 @@ import { T } from '../../types/common';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { Message } from '../../enums/common.enum';
+import router from 'next/router';
 
 interface TrendPropertiesProps {
 	initialInput: PropertiesInquiry;
@@ -42,6 +43,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 			},
 		});
 	/** HANDLERS **/
+
 	const likePropertyHandler = async(user: T, id: string) =>{
 		try{
 			if(!id) return;

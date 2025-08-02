@@ -38,10 +38,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 });
 
 const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
-
-
-
-	const device = useDeviceDetect();
+const device = useDeviceDetect();
 	const router = useRouter();
 	const { query } = router;
 

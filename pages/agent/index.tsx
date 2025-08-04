@@ -15,6 +15,10 @@ import { GET_AGENTS } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { Messages } from '../../libs/config';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '../../apollo/store';
+
+
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -22,7 +26,11 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
+
 const AgentList: NextPage = ({ initialInput, ...props }: any) => {
+
+	const user = useReactiveVar(userVar);
+
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
@@ -38,6 +46,8 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 	const [searchText, setSearchText] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
+
+
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 	const {
 		loading: getAgentsLoading,

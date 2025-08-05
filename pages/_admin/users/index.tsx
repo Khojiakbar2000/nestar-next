@@ -230,6 +230,9 @@ const AdminUsers: NextPage = ({ initialInquiry, ...props }: any) => {
 																text: '',
 															},
 														});
+														await getAllMembersRefetch({
+															input: membersInquiry
+														})
 													}}
 												/>
 											)}

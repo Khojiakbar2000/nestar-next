@@ -6,6 +6,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { onError } from '@apollo/client/link/error';
 import { getJwtToken } from '../libs/auth';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
+import { sweetErrorAlert } from '../libs/sweetAlert';
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function getHeaders() {
@@ -33,7 +34,7 @@ const tokenRefreshLink = new TokenRefreshLink({
 });
 
 function createIsomorphicLink() {
-	function createIsomorphicLink() {
+	
 		console.log('GraphQL URL inside createIsomorphicLink:', process.env.REACT_APP_API_GRAPHQL_URL); 
 	
 		const httpLink = createUploadLink({
@@ -45,7 +46,7 @@ function createIsomorphicLink() {
 		} else {
 			// rest of the code...
 		}
-	}
+	
 	
 	//console.log('GraphQL URL inside createIsomorphicLink:', process.env.NEXT_PUBLIC_API_GRAPHQL_URL);
 	if (typeof window !== 'undefined') {
@@ -85,8 +86,14 @@ function createIsomorphicLink() {
 
 		const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 			if (graphQLErrors) {
-				graphQLErrors.map(({ message, locations, path, extensions }) =>
-					console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+				graphQLErrors.forEach(({ message, locations, path, extensions }) =>{
+                 console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+				 //if(message.includes("input")) sweetErrorAlert(message);
+				 if(message){
+					sweetErrorAlert(message)
+				 }
+				}
+
 				);
 			}
 			if (networkError) console.log(`[Network error]: ${networkError}`);
@@ -108,7 +115,7 @@ function createIsomorphicLink() {
 
 		return from([errorLink, tokenRefreshLink, splitLink]);
 	}
-	}
+}
 
 
 

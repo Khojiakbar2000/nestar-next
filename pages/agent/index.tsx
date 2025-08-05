@@ -76,6 +76,11 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
+
+
+
+	
+
 	/** HANDLERS **/
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
 		setAnchorEl(e.currentTarget);
